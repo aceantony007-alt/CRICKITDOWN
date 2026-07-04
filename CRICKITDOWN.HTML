@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRICKITDOWN - Premium Cricket Scorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0066cc;
+            --primary-dark: #004399;
+            --secondary: #00a86b;
+            --accent: #ff6b35;
+            --success: #00d26a;
+            --error: #ff3333;
+            --warning: #ff9500;
+            --bg-primary: #0f0f1e;
+            --bg-secondary: #1a1a2e;
+            --surface: #252538;
+            --surface-light: #2d2d42;
+            --text: #e8e8f0;
+            --text-light: #b8b8c8;
+            --border: #3d3d52;
+            --gradient-1: linear-gradient(135deg, #0066cc 0%, #00a86b 50%, #ff6b35 100%);
+            --gradient-2: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-3: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 4px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Premium Header */
+        .header {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.1) 0%, rgba(0, 168, 107, 0.1) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 102, 204, 0.2);
+            padding: 30px 0;
+            margin-bottom: 40px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 102, 204, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            animation: headerSlideDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes headerSlideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00a8ff 0%, #00ff88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 30px rgba(0, 168, 255, 0.3);
+        }
+
+        .header p {
+            color: var(--text-light);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        /* Glassmorphism Navigation Tabs */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 40px;
+            background: rgba(37, 37, 56, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 8px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-x: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-light);
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .tab-btn:hover::before {
+            left: 100%;
+        }
+
+        .tab-btn.active {
+            color: white;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            box-shadow: 0 8px 24px rgba(0, 102, 204, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Premium Cards */
+        .card {
+            background: linear-gradient(135deg, rgba(37, 37, 56, 0.4) 0%, rgba(45, 45, 66, 0.2) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+
+        .card:hover {
+            background: linear-gradient(135deg, rgba(37, 37, 56, 0.6) 0%, rgba(45, 45, 66, 0.4) 100%);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 16px 48px rgba(0, 102, 204, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00a8ff 0%, #00ff88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            letter-spacing: -0.3px;
+        }
+
+        /* Premium Buttons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(0, 102, 204, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0052a3 0%, #003d7a 100%);
+            box-shadow: 0 12px 36px rgba(0, 102, 204, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #00a86b 0%, #008c4d 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(0, 168, 107, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #008c4d 0%, #007039 100%);
+            box-shadow: 0 12px 36px rgba(0, 168, 107, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #00d26a 0%, #00a852 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(0, 210, 106, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff3333 0%, #cc0000 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(255, 51, 51, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #cc0000 0%, #990000 100%);
+            box-shadow: 0 12px 36px rgba(255, 51, 51, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+
+        /* Grid System */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
+
+        /* Score Boxes */
+        .scoreboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .score-box {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.15) 0%, rgba(0, 168, 107, 0.15) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 168, 255, 0.3);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(0, 102, 204, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .score-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+
+        .score-box:hover {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.25) 0%, rgba(0, 168, 107, 0.25) 100%);
+            border-color: rgba(0, 168, 255, 0.6);
+            box-shadow: 0 20px 60px rgba(0, 102, 204, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transform: translateY(-6px);
+        }
+
+        .score-box .label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        .score-box .value {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00a8ff 0%, #00ff88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 12px 0;
+            letter-spacing: -1px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text);
+            letter-spacing: 0.3px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder, select::placeholder {
+            color: var(--text-light);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: rgba(0, 168, 255, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Alert Styles */
+        .alert {
+            padding: 18px 20px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            animation: slideInDown 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.15) 0%, rgba(0, 168, 107, 0.1) 100%);
+            border-color: rgba(0, 168, 255, 0.3);
+            color: #00a8ff;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.15) 0%, rgba(255, 107, 53, 0.1) 100%);
+            border-color: rgba(255, 149, 0, 0.3);
+            color: #ff9500;
+        }
+
+        /* Professional Coin Toss */
+        .coin-toss-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .coin-display {
+            width: 180px;
+            height: 180px;
+            margin: 30px auto;
+            background: linear-gradient(135deg, #d4af37 0%, #f0e68c 50%, #daa520 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 
+                0 20px 60px rgba(212, 175, 55, 0.6),
+                0 0 40px rgba(255, 215, 0, 0.3),
+                inset -4px -4px 15px rgba(0, 0, 0, 0.3),
+                inset 4px 4px 15px rgba(255, 255, 255, 0.2);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            user-select: none;
+            border: 10px solid #c9a961;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coin-display::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translate(-100%, -100%) rotate(45deg); }
+            100% { transform: translate(100%, 100%) rotate(45deg); }
+        }
+
+        .coin-display:hover {
+            transform: scale(1.12);
+            box-shadow: 
+                0 30px 80px rgba(212, 175, 55, 0.8),
+                0 0 60px rgba(255, 215, 0, 0.5),
+                inset -4px -4px 15px rgba(0, 0, 0, 0.4),
+                inset 4px 4px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .coin-display img {
+            width: 85%;
+            height: 85%;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+            position: relative;
+            z-index: 1;
+        }
+
+        .coin-display.flipping {
+            animation: coinFlip 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes coinFlip {
+            0% { transform: rotateY(0deg) rotateX(0deg); }
+            25% { transform: rotateY(180deg) rotateX(180deg); }
+            50% { transform: rotateY(360deg) rotateX(360deg); }
+            75% { transform: rotateY(540deg) rotateX(180deg); }
+            100% { transform: rotateY(720deg) rotateX(0deg); }
+        }
+
+        .coin-result {
+            margin-top: 25px;
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00a8ff 0%, #00ff88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Premium Scoring Buttons */
+        .scoring-section {
+            margin-top: 35px;
+        }
+
+        .scoring-section h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #00a8ff 0%, #00ff88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .scoring-category {
+            margin-bottom: 35px;
+        }
+
+        .scoring-category-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 18px;
+            padding-left: 12px;
+            border-left: 4px solid;
+            background: linear-gradient(90deg, rgba(0, 168, 255, 0.5), transparent);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .scoring-category:nth-child(1) .scoring-category-title {
+            border-color: var(--primary);
+        }
+
+        .scoring-category:nth-child(2) .scoring-category-title {
+            border-color: var(--error);
+        }
+
+        .scoring-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .scoring-btn {
+            padding: 20px 16px;
+            border: none;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .scoring-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+            animation: none;
+            transition: all 0.6s ease;
+        }
+
+        .scoring-btn:hover::before {
+            animation: shine 0.6s ease-in-out;
+        }
+
+        .scoring-btn-runs {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.3) 0%, rgba(0, 166, 200, 0.2) 100%);
+            color: #00a8ff;
+            border-color: rgba(0, 168, 255, 0.3);
+        }
+
+        .scoring-btn-runs:hover {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.5) 0%, rgba(0, 166, 200, 0.3) 100%);
+            border-color: rgba(0, 168, 255, 0.6);
+            box-shadow: 0 12px 36px rgba(0, 102, 204, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .scoring-btn-runs:active {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+        }
+
+        .scoring-btn-wicket {
+            background: linear-gradient(135deg, rgba(255, 51, 51, 0.3) 0%, rgba(204, 0, 0, 0.2) 100%);
+            color: #ff6b6b;
+            border-color: rgba(255, 51, 51, 0.3);
+        }
+
+        .scoring-btn-wicket:hover {
+            background: linear-gradient(135deg, rgba(255, 51, 51, 0.5) 0%, rgba(204, 0, 0, 0.3) 100%);
+            border-color: rgba(255, 51, 51, 0.6);
+            box-shadow: 0 12px 36px rgba(255, 51, 51, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .scoring-btn-extra {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.3) 0%, rgba(255, 107, 53, 0.2) 100%);
+            color: #ff9f43;
+            border-color: rgba(255, 149, 0, 0.3);
+        }
+
+        .scoring-btn-extra:hover {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.5) 0%, rgba(255, 107, 53, 0.3) 100%);
+            border-color: rgba(255, 149, 0, 0.6);
+            box-shadow: 0 12px 36px rgba(255, 149, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .scoring-btn-icon {
+            font-size: 28px;
+            line-height: 1;
+        }
+
+        .scoring-btn-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        /* Match Controls */
+        .match-controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .match-controls .btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 14px 20px;
+            border-radius: 12px;
+            justify-content: center;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+
+        th {
+            background: rgba(37, 37, 56, 0.8);
+            padding: 14px;
+            text-align: left;
+            font-weight: 700;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: rgba(0, 168, 255, 0.05);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .badge-success {
+            background: linear-gradient(135deg, rgba(0, 210, 106, 0.3) 0%, rgba(0, 168, 107, 0.2) 100%);
+            color: #00ff88;
+            border: 1px solid rgba(0, 210, 106, 0.3);
+        }
+
+        .badge-error {
+            background: linear-gradient(135deg, rgba(255, 51, 51, 0.3) 0%, rgba(204, 0, 0, 0.2) 100%);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 51, 51, 0.3);
+        }
+
+        /* List */
+        .list {
+            list-style: none;
+        }
+
+        .list-item {
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(37, 37, 56, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .list-item:hover {
+            background: rgba(0, 168, 255, 0.1);
+            border-color: rgba(0, 168, 255, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 28px;
+                gap: 10px;
+            }
+
+            .container {
+                padding: 12px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .scoreboard {
+                grid-template-columns: 1fr;
+            }
+
+            .scoring-buttons-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .match-controls {
+                flex-direction: column;
+            }
+
+            .match-controls .btn {
+                width: 100%;
+            }
+
+            .tabs {
+                gap: 4px;
+            }
+
+            .tab-btn {
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+        }
+
+        /* Utility Classes */
+        .flex {
+            display: flex;
+            gap: 10px;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>🏏 CRICKITDOWN</h1>
+            <p>Premium Professional Cricket Scoring Platform</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('home')">🏠 Home</button>
+            <button class="tab-btn" onclick="switchTab('newmatch')">➕ New Match</button>
+            <button class="tab-btn" onclick="switchTab('scoring')">⚾ Live Scoring</button>
+            <button class="tab-btn" onclick="switchTab('scoreboard')">📊 Scoreboard</button>
+            <button class="tab-btn" onclick="switchTab('history')">📁 History</button>
+            <button class="tab-btn" onclick="switchTab('teams')">👥 Teams</button>
+        </div>
+
+        <!-- HOME TAB -->
+        <div id="home" class="tab-content active">
+            <div class="alert alert-info">
+                <span>ℹ️</span>
+                <div>
+                    <strong>Welcome to CRICKITDOWN!</strong><br>
+                    Professional-grade cricket scoring platform with real-time statistics and match management.
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>📊 Current Match</h3>
+                    <div id="homeMatchInfo">
+                        <p style="color: var(--text-light); margin: 15px 0;">No active match</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="switchTab('newmatch')" style="margin-top: 15px;">Start New Match</button>
+                </div>
+
+                <div class="card">
+                    <h3>⚡ Quick Stats</h3>
+                    <table>
+                        <tr>
+                            <td>Total Matches</td>
+                            <td style="text-align: right; font-weight: 600; color: #00ff88;" id="totalMatches">0</td>
+                        </tr>
+                        <tr>
+                            <td>Teams Created</td>
+                            <td style="text-align: right; font-weight: 600; color: #00a8ff;" id="totalTeams">0</td>
+                        </tr>
+                        <tr>
+                            <td>Total Players</td>
+                            <td style="text-align: right; font-weight: 600; color: #ff9f43;" id="totalPlayers">0</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>✨ Premium Features</h3>
+                <ul class="list">
+                    <li class="list-item">
+                        <span>⚾ Ball-by-Ball Scoring</span>
+                        <span class="badge badge-success">✓</span>
+                    </li>
+                    <li class="list-item">
+                        <span>👥 Team & Player Management</span>
+                        <span class="badge badge-success">✓</span>
+                    </li>
+                    <li class="list-item">
+                        <span>📊 Live Scoreboard</span>
+                        <span class="badge badge-success">✓</span>
+                    </li>
+                    <li class="list-item">
+                        <span>💾 Auto-Save & Resume</span>
+                        <span class="badge badge-success">✓</span>
+                    </li>
+                    <li class="list-item">
+                        <span>📈 Player Statistics</span>
+                        <span class="badge badge-success">✓</span>
+                    </li>
+                    <li class="list-item">
+                        <span>↶ Unlimited Undo</span>
+                        <span class="badge badge-success">✓</span>
+                    </li>
+                    <li class="list-item">
+                        <span>📁 Match History Archive</span>
+                        <span class="badge badge-success">✓</span>
+                    </li>
+                    <li class="list-item">
+                        <span>🪙 Professional Coin Toss</span>
+                        <span class="badge badge-success">✓</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- NEW MATCH TAB -->
+        <div id="newmatch" class="tab-content">
+            <div class="card">
+                <h3>🪙 Coin Toss</h3>
+                <div class="coin-toss-container">
+                    <p style="color: var(--text-light); margin-bottom: 15px; font-size: 15px;">Click the coin to flip and decide who bats first</p>
+                    <div class="coin-display" id="coinElement" onclick="flipCoin()">
+                        <img id="coinImage" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23d4af37'/%3E%3C/svg%3E" alt="Coin">
+                    </div>
+                    <div id="coinResultDisplay"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Create New Match</h3>
+                
+                <div class="form-group">
+                    <label>Match Format</label>
+                    <select id="matchFormat">
+                        <option value="t20">T20 (20 Overs)</option>
+                        <option value="odi">ODI (50 Overs)</option>
+                        <option value="custom">Custom Overs</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Custom Overs (if selected)</label>
+                    <input type="number" id="customOvers" min="1" max="99" placeholder="Enter overs" value="10">
+                </div>
+
+                <div class="form-group">
+                    <label>Team 1 Name</label>
+                    <input type="text" id="team1Name" placeholder="e.g., Team A">
+                </div>
+
+                <div class="form-group">
+                    <label>Team 1 Players (comma-separated)</label>
+                    <input type="text" id="team1Players" placeholder="e.g., Player1, Player2, Player3">
+                </div>
+
+                <div class="form-group">
+                    <label>Team 2 Name</label>
+                    <input type="text" id="team2Name" placeholder="e.g., Team B">
+                </div>
+
+                <div class="form-group">
+                    <label>Team 2 Players (comma-separated)</label>
+                    <input type="text" id="team2Players" placeholder="e.g., Player1, Player2, Player3">
+                </div>
+
+                <button class="btn btn-primary" onclick="startMatch()">🏏 Start Match</button>
+            </div>
+        </div>
+
+        <!-- LIVE SCORING TAB -->
+        <div id="scoring" class="tab-content">
+            <div id="scoringContainer" style="display: none;">
+                <div class="card">
+                    <h3 id="scoringHeader">Live Scoring</h3>
+                    
+                    <div class="scoreboard">
+                        <div class="score-box">
+                            <div class="label">Batting Team</div>
+                            <div class="value" id="battingTeamScore">0/0</div>
+                            <div style="color: var(--text-light); font-size: 14px; margin-top: 8px;" id="battingTeamName">Team</div>
+                        </div>
+                        <div class="score-box">
+                            <div class="label">Current Over</div>
+                            <div class="value" id="currentOvers">0.0</div>
+                            <div style="color: var(--text-light); font-size: 14px; margin-top: 8px;">Runs This Over: <span id="runsThisOver" style="color: #00ff88; font-weight: 700;">0</span></div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <span>ℹ️</span>
+                        <div>
+                            <strong>Batsman:</strong> <span id="currentBatsman">-</span> | 
+                            <strong>Bowler:</strong> <span id="currentBowler">-</span>
+                        </div>
+                    </div>
+
+                    <div class="scoring-section">
+                        <h3>Score This Ball</h3>
+
+                        <div class="scoring-category">
+                            <div class="scoring-category-title">📊 Runs</div>
+                            <div class="scoring-buttons-grid">
+                                <button class="scoring-btn scoring-btn-runs" onclick="recordRun(0)">
+                                    <span class="scoring-btn-icon">🔵</span>
+                                    <span class="scoring-btn-label">Dot</span>
+                                </button>
+                                <button class="scoring-btn scoring-btn-runs" onclick="recordRun(1)">
+                                    <span class="scoring-btn-icon">1️⃣</span>
+                                    <span class="scoring-btn-label">Single</span>
+                                </button>
+                                <button class="scoring-btn scoring-btn-runs" onclick="recordRun(2)">
+                                    <span class="scoring-btn-icon">2️⃣</span>
+                                    <span class="scoring-btn-label">Two</span>
+                                </button>
+                                <button class="scoring-btn scoring-btn-runs" onclick="recordRun(3)">
+                                    <span class="scoring-btn-icon">3️⃣</span>
+                                    <span class="scoring-btn-label">Three</span>
+                                </button>
+                                <button class="scoring-btn scoring-btn-runs" onclick="recordRun(4)">
+                                    <span class="scoring-btn-icon">4️⃣</span>
+                                    <span class="scoring-btn-label">Four</span>
+                                </button>
+                                <button class="scoring-btn scoring-btn-runs" onclick="recordRun(6)">
+                                    <span class="scoring-btn-icon">6️⃣</span>
+                                    <span class="scoring-btn-label">Six</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="scoring-category">
+                            <div class="scoring-category-title">⚠️ Wickets & Extras</div>
+                            <div class="scoring-buttons-grid">
+                                <button class="scoring-btn scoring-btn-wicket" onclick="recordWicket()">
+                                    <span class="scoring-btn-icon">💀</span>
+                                    <span class="scoring-btn-label">Wicket</span>
+                                </button>
+                                <button class="scoring-btn scoring-btn-extra" onclick="recordExtra('wd')">
+                                    <span class="scoring-btn-icon">📍</span>
+                                    <span class="scoring-btn-label">Wide</span>
+                                </button>
+                                <button class="scoring-btn scoring-btn-extra" onclick="recordExtra('nb')">
+                                    <span class="scoring-btn-icon">📍</span>
+                                    <span class="scoring-btn-label">No Ball</span>
+                                </button>
+                                <button class="scoring-btn scoring-btn-extra" onclick="recordExtra('bye')">
+                                    <span class="scoring-btn-icon">📍</span>
+                                    <span class="scoring-btn-label">Bye</span>
+                                </button>
+                                <button class="scoring-btn scoring-btn-extra" onclick="recordExtra('lb')">
+                                    <span class="scoring-btn-icon">📍</span>
+                                    <span class="scoring-btn-label">Leg Bye</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="match-controls">
+                            <button class="btn btn-danger btn-small" onclick="undoLast()">↶ Undo</button>
+                            <button class="btn btn-success btn-small" onclick="completeOver()">✓ Over</button>
+                            <button class="btn btn-primary btn-small" onclick="switchTab('scoreboard')">📊 Board</button>
+                            <button class="btn btn-danger btn-small" onclick="endInnings()">🛑 End</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>This Over</h3>
+                    <div id="thisOverDetails" style="font-family: 'Courier New', monospace; background: rgba(0, 0, 0, 0.2); padding: 16px; border-radius: 12px; overflow-x: auto; border: 1px solid rgba(255, 255, 255, 0.1);">
+                        No balls bowled yet
+                    </div>
+                </div>
+            </div>
+
+            <div id="noMatchAlert" class="alert alert-warning">
+                <span>⚠️</span>
+                <div>
+                    <strong>No Active Match</strong><br>
+                    Please create a new match to start scoring.
+                    <button class="btn btn-primary btn-small" onclick="switchTab('newmatch')" style="margin-top: 12px;">Create Match</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCOREBOARD TAB -->
+        <div id="scoreboard" class="tab-content">
+            <div id="scoreboardContainer" style="display: none;">
+                <div class="card">
+                    <h3>Match Summary</h3>
+                    <div id="matchSummaryTable" style="color: var(--text-light);"></div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>Batting Summary</h3>
+                        <table id="battingTable">
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>Runs</th>
+                                    <th>Balls</th>
+                                    <th>SR</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <div class="card">
+                        <h3>Bowling Summary</h3>
+                        <table id="bowlingTable">
+                            <thead>
+                                <tr>
+                                    <th>Bowler</th>
+                                    <th>Runs</th>
+                                    <th>Wickets</th>
+                                    <th>Overs</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Fall of Wickets</h3>
+                    <table id="wicketsTable">
+                        <thead>
+                            <tr>
+                                <th>Wicket</th>
+                                <th>Player</th>
+                                <th>Score</th>
+                                <th>Over</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="noScoreboardAlert" class="alert alert-warning">
+                <span>⚠️</span>
+                <div>No active match scoreboard to display</div>
+            </div>
+        </div>
+
+        <!-- MATCH HISTORY TAB -->
+        <div id="history" class="tab-content">
+            <div class="card">
+                <h3>Match History & Archive</h3>
+                <div id="historyList" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+
+        <!-- TEAMS TAB -->
+        <div id="teams" class="tab-content">
+            <div class="card">
+                <h3>Team Management</h3>
+                
+                <h4 style="margin-top: 25px; margin-bottom: 18px; font-size: 16px; font-weight: 700; color: #00a8ff;">Create New Team</h4>
+                <div class="form-group">
+                    <label>Team Name</label>
+                    <input type="text" id="newTeamName" placeholder="Enter team name">
+                </div>
+                
+                <div class="form-group">
+                    <label>Players (comma-separated)</label>
+                    <input type="text" id="newTeamPlayers" placeholder="Player1, Player2, Player3">
+                </div>
+
+                <button class="btn btn-primary" onclick="createTeam()">➕ Add Team</button>
+
+                <h4 style="margin-top: 35px; margin-bottom: 18px; font-size: 16px; font-weight: 700; color: #00a8ff;">Saved Teams</h4>
+                <div id="teamsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Storage
+        const app = {
+            currentMatch: null,
+            teams: [],
+            matchHistory: [],
+
+            init() {
+                this.loadData();
+                this.updateHome();
+            },
+
+            loadData() {
+                const saved = localStorage.getItem('crickitdownData');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    this.teams = data.teams || [];
+                    this.matchHistory = data.matchHistory || [];
+                }
+            },
+
+            saveData() {
+                localStorage.setItem('crickitdownData', JSON.stringify({
+                    teams: this.teams,
+                    matchHistory: this.matchHistory
+                }));
+            },
+
+            updateHome() {
+                document.getElementById('totalMatches').textContent = this.matchHistory.length;
+                document.getElementById('totalTeams').textContent = this.teams.length;
+                document.getElementById('totalPlayers').textContent = 
+                    this.teams.reduce((sum, team) => sum + team.players.length, 0);
+
+                if (this.currentMatch) {
+                    const batting = this.currentMatch.team1.score;
+                    document.getElementById('homeMatchInfo').innerHTML = 
+                        `<strong style="color: #00a8ff;">${this.currentMatch.team1.name}</strong><br>
+                         <span style="color: #00ff88; font-weight: 700; font-size: 18px;">${batting.runs}/${batting.wickets}</span> <span style="color: var(--text-light);">(${batting.overs}.${batting.balls} overs)</span><br>
+                         <button class="btn btn-secondary btn-small" onclick="switchTab('scoring')" style="margin-top: 12px;">Continue Match</button>`;
+                }
+            }
+        };
+
+        // Initialize
+        app.init();
+
+        // Tab Switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target?.classList.add('active');
+
+            if (tabName === 'home') app.updateHome();
+            if (tabName === 'scoreboard') updateScoreboard();
+            if (tabName === 'history') displayHistory();
+            if (tabName === 'teams') displayTeams();
+        }
+
+        // Start Match
+        function startMatch() {
+            const format = document.getElementById('matchFormat').value;
+            let overs = format === 't20' ? 20 : format === 'odi' ? 50 : parseInt(document.getElementById('customOvers').value);
+            
+            const team1Name = document.getElementById('team1Name').value.trim();
+            const team2Name = document.getElementById('team2Name').value.trim();
+            const team1Players = document.getElementById('team1Players').value.split(',').map(p => p.trim()).filter(p => p);
+            const team2Players = document.getElementById('team2Players').value.split(',').map(p => p.trim()).filter(p => p);
+
+            if (!team1Name || !team2Name || team1Players.length === 0 || team2Players.length === 0) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            app.currentMatch = {
+                id: Date.now(),
+                format,
+                overs,
+                startTime: new Date(),
+                team1: {
+                    name: team1Name,
+                    players: team1Players,
+                    score: { runs: 0, wickets: 0, overs: 0, balls: 0 },
+                    batsmen: { striker: team1Players[0], nonStriker: team1Players[1] || '' },
+                    bowler: team2Players[0],
+                    balls: []
+                },
+                team2: {
+                    name: team2Name,
+                    players: team2Players,
+                    score: { runs: 0, wickets: 0, overs: 0, balls: 0 },
+                    batsmen: { striker: team2Players[0], nonStriker: team2Players[1] || '' },
+                    bowler: team1Players[0],
+                    balls: []
+                },
+                currentInnings: 1,
+                status: 'live'
+            };
+
+            alert(`Match started! ${team1Name} batting first.`);
+            switchTab('scoring');
+            updateScoring();
+        }
+
+        // Recording Runs
+        function recordRun(runs) {
+            if (!app.currentMatch) return alert('No active match');
+            
+            const team = app.currentMatch.team1;
+            team.score.runs += runs;
+            team.score.balls++;
+            team.balls.push({ runs, type: 'run' });
+
+            if (team.score.balls === 6) completeOver();
+            else updateScoring();
+        }
+
+        // Recording Wicket
+        function recordWicket() {
+            if (!app.currentMatch) return alert('No active match');
+            
+            const team = app.currentMatch.team1;
+            team.score.wickets++;
+            team.score.balls++;
+            team.balls.push({ runs: 0, type: 'wicket' });
+
+            if (team.score.balls === 6) completeOver();
+            else updateScoring();
+        }
+
+        // Recording Extras
+        function recordExtra(type) {
+            if (!app.currentMatch) return alert('No active match');
+            
+            const team = app.currentMatch.team1;
+            team.score.runs += 1;
+            team.balls.push({ runs: 1, type: `extra-${type}` });
+
+            updateScoring();
+        }
+
+        // Undo Last Ball
+        function undoLast() {
+            if (!app.currentMatch || app.currentMatch.team1.balls.length === 0) return;
+            
+            const last = app.currentMatch.team1.balls.pop();
+            app.currentMatch.team1.score.balls--;
+            if (last.type === 'wicket') {
+                app.currentMatch.team1.score.wickets--;
+            } else {
+                app.currentMatch.team1.score.runs -= last.runs;
+            }
+            updateScoring();
+        }
+
+        // Complete Over
+        function completeOver() {
+            if (!app.currentMatch) return;
+            
+            const team = app.currentMatch.team1;
+            team.score.overs = Math.floor(team.score.balls / 6);
+            team.score.balls = team.score.balls % 6;
+
+            team.balls = [];
+            updateScoring();
+        }
+
+        // End Innings
+        function endInnings() {
+            if (!app.currentMatch) return;
+            
+            if (app.currentMatch.currentInnings === 1) {
+                app.currentMatch.currentInnings = 2;
+                app.currentMatch.team1 = app.currentMatch.team2;
+                alert('Innings 1 ended. Team 2 batting now.');
+                updateScoring();
+            } else {
+                app.currentMatch.status = 'completed';
+                app.matchHistory.push(app.currentMatch);
+                app.saveData();
+                alert('Match completed!');
+                app.currentMatch = null;
+                switchTab('home');
+            }
+        }
+
+        // Update Scoring UI
+        function updateScoring() {
+            if (!app.currentMatch) {
+                document.getElementById('scoringContainer').style.display = 'none';
+                document.getElementById('noMatchAlert').style.display = 'flex';
+                return;
+            }
+
+            document.getElementById('scoringContainer').style.display = 'block';
+            document.getElementById('noMatchAlert').style.display = 'none';
+
+            const team = app.currentMatch.team1;
+            document.getElementById('scoringHeader').textContent = 
+                `Live Scoring - ${team.name}`;
+            document.getElementById('battingTeamScore').textContent = 
+                `${team.score.runs}/${team.score.wickets}`;
+            document.getElementById('battingTeamName').textContent = team.name;
+            document.getElementById('currentOvers').textContent = 
+                `${team.score.overs}.${team.score.balls}`;
+            document.getElementById('currentBatsman').textContent = team.batsmen.striker;
+            document.getElementById('currentBowler').textContent = team.bowler;
+            document.getElementById('runsThisOver').textContent = 
+                team.balls.reduce((sum, b) => sum + b.runs, 0);
+            
+            const ballDetails = team.balls.map(b => {
+                if (b.type === 'wicket') return '🔴';
+                if (b.type.startsWith('extra')) return '📍';
+                return b.runs;
+            }).join(' ');
+
+            document.getElementById('thisOverDetails').textContent = 
+                team.balls.length === 0 ? 'No balls bowled yet' : ballDetails;
+        }
+
+        // Update Scoreboard
+        function updateScoreboard() {
+            if (!app.currentMatch) {
+                document.getElementById('scoreboardContainer').style.display = 'none';
+                document.getElementById('noScoreboardAlert').style.display = 'flex';
+                return;
+            }
+
+            document.getElementById('scoreboardContainer').style.display = 'block';
+            document.getElementById('noScoreboardAlert').style.display = 'none';
+
+            const team = app.currentMatch.team1;
+            document.getElementById('matchSummaryTable').innerHTML = `
+                <strong style="color: #00a8ff;">${team.name}</strong><br>
+                <span style="margin-top: 8px; display: block;">Runs: <span style="color: #00ff88; font-weight: 700;">${team.score.runs}</span></span>
+                <span>Wickets: <span style="color: #ff6b6b; font-weight: 700;">${team.score.wickets}</span></span>
+                <span>Overs: <span style="color: #ff9f43; font-weight: 700;">${team.score.overs}.${team.score.balls}</span></span>
+            `;
+
+            let battingHTML = '';
+            team.players.forEach(p => {
+                battingHTML += `<tr><td>${p}</td><td>-</td><td>-</td><td>-</td></tr>`;
+            });
+            document.getElementById('battingTable').querySelector('tbody').innerHTML = battingHTML;
+
+            let bowlingHTML = '';
+            app.currentMatch.team2.players.forEach(p => {
+                bowlingHTML += `<tr><td>${p}</td><td>-</td><td>-</td><td>-</td></tr>`;
+            });
+            document.getElementById('bowlingTable').querySelector('tbody').innerHTML = bowlingHTML;
+        }
+
+        // Display History
+        function displayHistory() {
+            let html = '';
+            if (app.matchHistory.length === 0) {
+                html = '<p style="color: var(--text-light);">No matches in history yet</p>';
+            } else {
+                html = '<ul class="list">';
+                app.matchHistory.forEach(match => {
+                    const date = new Date(match.startTime).toLocaleDateString();
+                    html += `<li class="list-item">
+                        <span>${match.team1.name} vs ${match.team2.name}</span>
+                        <span style="font-size: 12px; color: var(--text-light);">${date}</span>
+                    </li>`;
+                });
+                html += '</ul>';
+            }
+            document.getElementById('historyList').innerHTML = html;
+        }
+
+        // Coin Toss Function
+        let coinFlipping = false;
+        const coinImages = {
+            heads: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="50" fill="%23d4af37"/%3E%3Ctext x="50" y="60" text-anchor="middle" font-size="60" fill="%23333"%3E👤%3C/text%3E%3C/svg%3E',
+            tails: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="50" fill="%23d4af37"/%3E%3Ctext x="50" y="60" text-anchor="middle" font-size="60" fill="%23333"%3E🦁%3C/text%3E%3C/svg%3E'
+        };
+
+        function flipCoin() {
+            if (coinFlipping) return;
+            
+            coinFlipping = true;
+            const coinElement = document.getElementById('coinElement');
+            const coinImage = document.getElementById('coinImage');
+            const resultDisplay = document.getElementById('coinResultDisplay');
+            
+            coinElement.classList.add('flipping');
+            resultDisplay.innerHTML = '';
+            
+            setTimeout(() => {
+                const result = Math.random() > 0.5;
+                const resultText = result ? 'Heads' : 'Tails';
+                const resultEmoji = result ? '👤 Heads' : '🦁 Tails';
+                
+                coinImage.src = result ? coinImages.heads : coinImages.tails;
+                coinElement.classList.remove('flipping');
+                
+                resultDisplay.innerHTML = `<div class="coin-result">${resultEmoji}</div>
+                    <p style="color: var(--text-light); margin-top: 12px; font-size: 15px; font-weight: 600;">
+                        ${resultText === 'Heads' ? 'Team 1' : 'Team 2'} wins the toss!
+                    </p>`;
+                
+                coinFlipping = false;
+            }, 800);
+        }
+
+        // Teams Management
+        function createTeam() {
+            const name = document.getElementById('newTeamName').value.trim();
+            const players = document.getElementById('newTeamPlayers').value.split(',').map(p => p.trim()).filter(p => p);
+
+            if (!name || players.length === 0) {
+                alert('Please enter team name and players');
+                return;
+            }
+
+            app.teams.push({ id: Date.now(), name, players });
+            app.saveData();
+            document.getElementById('newTeamName').value = '';
+            document.getElementById('newTeamPlayers').value = '';
+            displayTeams();
+            alert('Team created!');
+        }
+
+        function displayTeams() {
+            let html = '';
+            if (app.teams.length === 0) {
+                html = '<p style="color: var(--text-light);">No teams created yet</p>';
+            } else {
+                app.teams.forEach(team => {
+                    html += `<div style="padding: 16px; background: rgba(0, 168, 255, 0.1); border: 1px solid rgba(0, 168, 255, 0.2); border-radius: 12px; margin-bottom: 12px;">
+                        <strong style="color: #00a8ff;">${team.name}</strong><br>
+                        <small style="color: var(--text-light);">${team.players.join(', ')}</small><br>
+                        <button class="btn btn-danger btn-small" onclick="deleteTeam(${team.id})" style="margin-top: 10px;">Delete</button>
+                    </div>`;
+                });
+            }
+            document.getElementById('teamsList').innerHTML = html;
+        }
+
+        function deleteTeam(id) {
+            app.teams = app.teams.filter(t => t.id !== id);
+            app.saveData();
+            displayTeams();
+        }
+    </script>
+</body>
+</html>
